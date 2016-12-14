@@ -11,6 +11,41 @@
   	<script src="javascript/rpsJava.js"></script>
   </head>
   <body>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Rock, Paper, Scissors</h1>
+        <p>Play with Friends!</p>
+      </div>
+    </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <p><span id="playerMessage">Hi 'Player 1', You are Player 1</span></p>
+        <p><span id="infoMessage">Waiting for 'Player 2' to choose</span></p>
+      </div>
+    </div>
+
+    <div id="playersRow" class="row">
+      <div class="col-md-3" id="player1info">
+        <h4>Player 1 name</h4>
+        <div id="player1choices"></div>
+        <div id="player1score"></div>
+      </div>
+
+      <div class="col-md-3 col-md-offset-1" id="resultsArea"></div>
+
+      <div class="col-md-3 col-md-offset-1" id="player2info">
+        <h4>Player 2 name</h4>
+        <div id="player2choices"></div>
+        <div id="player2score"></div>
+      </div>
+    </div>
+    <br/>
+    <div class="row" id="trashTalkArea">
+
+    </div>
+  </div>
 
   </body>
 
