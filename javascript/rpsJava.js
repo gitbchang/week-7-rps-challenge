@@ -10,6 +10,10 @@ $(document).ready(function(){
 
   var database = firebase.database();
 
+  var dbPlayerNames = database.ref("/names");
+  var player1ref = database.ref("/names/player1");
+  var player2ref = database.ref("/names/player2");
+
   // Link to Firebase Database for viewer tracking
   // database reference for us
   var connectionsRef = database.ref("/connections");
@@ -35,13 +39,67 @@ $(document).ready(function(){
   var p1loss = 0;
   var p2wins = 0;
   var p2loss = 0;
+  var p1choice;
+  var p2choice;
+  var p1name;
+  var p2name;
+
+  // On click Player 1 Submit buttons
+  $("#p1SubmitButton").on("click", function(e){
+    p1name = $("#p1NameInput").val();
+
+    // console.log(e);
+    console.log(p1name);
+    var timestamp1 = Date.now();
+
+
+    player1ref.set({
+      player1Name: p1name,
+      player1ID: timestamp1
+    });
+
+  });
+
+  $("#p2SubmitButton").on("click", function(e){
+    p2name = $("#p2NameInput").val().trim();
+    // console.log(e);
+    console.log(p2name);
+    var timestamp2 = Date.now();
+
+    player2ref.set({
+      player2Name: p2name,
+      player2ID: timestamp2
+    });
+
+  });
+
+
+player1ref.on("value", function(snap){
+  var snapshot = snap.val();
+  var new1Name = snapshot.player1Name;
+  var new2Name = snapshot.player2Name;
+  console.log(snapshot);
+  $("#fbp1Name").html(new1Name);
+
+});
+player2ref.on("value", function(snap){
+  var snapshot = snap.val();
+  var new2Name = snapshot.player2Name;
+  console.log(snapshot);
+
+  $("#fbp2Name").html(new2Name);
+});
+
 
 
 // Generate Rock,Paper,Scissor buttons
 function generateChoices(){
+  $("#player1choices").empty();
+  $("#player2choices").empty();
+  $("#resultsArea").empty();
   for(var x = 0; x < choices.length; x++){
     var choice1Button = $("<button>");
-    choice1Button.attr("data-choice", choices[x]);
+    choice1Button.attr("data-choice1", choices[x]);
     choice1Button.text(choices[x]);
     choice1Button.addClass("choiceButton");
     choice1Button.addClass("btn btn-primary");
@@ -50,7 +108,7 @@ function generateChoices(){
   }
   for(var i = 0; i < choices.length; i++){
     var choice2Button = $("<button>");
-    choice2Button.attr("data-choice", choices[i]);
+    choice2Button.attr("data-choice2", choices[i]);
     choice2Button.text(choices[i]);
     choice2Button.addClass("choiceButton");
     choice2Button.addClass("btn btn-primary");
@@ -74,11 +132,133 @@ function updateScores(){
 }
 updateScores();
 
-$(".choiceButton").on("click", function(){
-  console.log($(this).data("choice"));
+$(document).on("click", ".choiceButton", function(){
+  console.log($(this).data("choice1"));
+  // PLAYER 1 CHOICE LOGIC
+  if($(this).data("choice1") === "Rock"){
+    $("#player1choices").empty();
+    $("#player1choices").html("<h3>Rock</h3>");
+    $("#player1choices").attr("data-chosen", true);
+    p1choice = "rock";
+    checkPlayerChoices();
+
+  }
+
+  else if($(this).data("choice1") === "Paper"){
+    $("#player1choices").empty();
+    $("#player1choices").html("<h3>Paper</h3>");
+    $("#player1choices").attr("data-chosen", true);
+    p1choice = "paper";
+    checkPlayerChoices();
+
+  }
+  else if($(this).data("choice1") === "Scissors"){
+    $("#player1choices").empty();
+    $("#player1choices").html("<h3>Scissors</h3>");
+    $("#player1choices").attr("data-chosen", true);
+    p1choice = "scissors";
+    checkPlayerChoices();
+  }
+
+  // PLAYER 2 CHOICE LOGIC
+  if($(this).data("choice2") === "Rock"){
+    $("#player2choices").empty();
+    $("#player2choices").html("<h3>Rock</h3>");
+    $("#player2choices").attr("data-chosen", true);
+    p2choice = "rock";
+    checkPlayerChoices();
+
+  }
+
+  else if($(this).data("choice2") === "Paper"){
+    $("#player2choices").empty();
+    $("#player2choices").html("<h3>Paper</h3>");
+    $("#player2choices").attr("data-chosen", true);
+    p2choice = "paper";
+    checkPlayerChoices();
+
+  }
+  else if($(this).data("choice2") === "Scissors"){
+    $("#player2choices").empty();
+    $("#player2choices").html("<h3>Scissors</h3>");
+    $("#player2choices").attr("data-chosen", true);
+    p2choice = "scissors";
+    checkPlayerChoices();
+  }
+
   // console.log($(this).data("choice2"));
 
 });
+
+function checkPlayerChoices(){
+  if($("#player1choices").data("chosen") === true && $("#player2choices").data("chosen") === true){
+    console.log("test1");
+    if (p1choice === "rock" && p2choice === "rock"){
+      $("#resultsArea").html("<h3>TIE!</h3>");
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "rock" && p2choice === "paper"){
+      $("#resultsArea").html("<h3>Player1 Wins!</h3>");
+      p1wins++;
+      p2loss++;
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "rock" && p2choice === "scissors"){
+      $("#resultsArea").html("<h3>Player2 Wins!</h3>");
+      p2wins++;
+      p1loss++;
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "paper" && p2choice === "paper"){
+      $("#resultsArea").html("<h3>TIE!</h3>");
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "paper" && p2choice === "scissors"){
+      $("#resultsArea").html("<h3>Player2 Wins!</h3>");
+      p2wins++;
+      p1loss++;
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "paper" && p2choice === "rock"){
+      $("#resultsArea").html("<h3>Player1 Wins!</h3>");
+      p1wins++;
+      p2loss++;
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "scissors" && p2choice === "scissors"){
+      $("#resultsArea").html("<h3>TIE!</h3>");
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "scissors" && p2choice === "rock"){
+      $("#resultsArea").html("<h3>Player2 Wins!</h3>");
+      p2wins++;
+      p1loss++;
+      updateScores();
+      nextGame();
+    }
+    else if (p1choice === "scissors" && p2choice === "paper"){
+      $("#resultsArea").html("<h3>Player1 Wins!</h3>");
+      p1wins++;
+      p2loss++;
+      updateScores();
+      nextGame();
+    }
+  }
+}
+
+function nextGame(){
+  setTimeout(generateChoices, 3000);
+  p1choice = "";
+  p2choice = "";
+}
+
 
 
 
