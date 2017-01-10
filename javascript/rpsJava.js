@@ -43,6 +43,11 @@ $(document).ready(function(){
   var p2choice;
   var p1name;
   var p2name;
+  var timestamp1;
+  var timestamp2;
+  var p1ID;
+  var p2ID;
+
 
   // On click Player 1 Submit buttons
   $("#p1SubmitButton").on("click", function(e){
@@ -50,7 +55,8 @@ $(document).ready(function(){
 
     // console.log(e);
     console.log(p1name);
-    var timestamp1 = Date.now();
+    timestamp1 = Date.now();
+    p1ID = timestamp1;
 
 
     player1ref.set({
@@ -68,7 +74,8 @@ $(document).ready(function(){
     p2name = $("#p2NameInput").val().trim();
     // console.log(e);
     console.log(p2name);
-    var timestamp2 = Date.now();
+    timestamp2 = Date.now();
+    p2ID = timestamp2;
 
     player2ref.set({
       player2Name: p2name,
@@ -101,6 +108,35 @@ player2ref.on("value", function(snap){
   if(new2Name !== undefined){
     $("#p2NameHide").hide();
   }
+});
+
+//CHAT FUNCTIONALITY
+
+$('#chat_msg').keypress(function(event) {
+
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13' && $('#chat_msg').val() !== ''){
+        database.ref("/chat").push({
+            id: "",
+            time: Date.now(),
+            msg: $('#chat_msg').val()
+        });
+        $('#chat_msg').val('');
+    }
+});
+
+database.ref("/chat").on("child_added", function(snapshot){
+  var snap = snapshot.val();
+  var newMsg = snap.msg;
+  var checkID = snap.id;
+  console.log(snap);
+
+  // CHECK THE PERSON ID - TIMESTAMP
+  // if(player1ref.id === checkID){
+  //   $("#topChat").append("<p>"+newMsg+"</p>");
+  // }
+  $("#topChat").append("<p>"+newMsg+"</p>");
+
 });
 
 
