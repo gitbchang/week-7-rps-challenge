@@ -22,23 +22,27 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 col-md-offset-3 text-center">
-        <p><span id="playerMessage">Hi <span id="fbp1Name">'Player 1 Name'</span>, You are Player 1</span></p>
-        <p><span>Hi <span id="fbp2Name">'Player 2 Name'</span>, You are Player 2</span></p>
+        <p><span id="playerMessage">Hi <span class="fbp1Name">'Player 1 Name'</span>, You are Player 1</span></p>
+        <p><span>Hi <span class="fbp2Name">'Player 2 Name'</span>, You are Player 2</span></p>
         <p><span id="infoMessage">Waiting for 'Player 2' to choose</span></p>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3" id="p1NameHide">
         <label for="player1NameInput">Player 1 Name</label>
         <input type="text" id="p1NameInput" name="player1NameInput" placeholder="Enter Name">
         <button class="btn btn-success btn-sm" type="button" id="p1SubmitButton">Submit</button>
       </div>
       <div class="col-md-6">
         <div id="topChatBox">
-          
+              <h4>Chat</h4>
+              <div class="lists" id="topChat"></div>
+              <div class="new_msg"><input type="text" id="chat_msg" placeholder="Type message..." /></div>
+              <button class="btn btn-primary btn-sm" type="button" id="chatSubmit">Submit</button>
+
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3" id="p2NameHide">
         <label for="player1NameInput">Player 2 Name</label>
         <input type="text" id="p2NameInput" name="player2NameInput" placeholder="Enter Name">
         <button class="btn btn-success btn-sm" type="button" id="p2SubmitButton">Submit</button>
@@ -48,7 +52,7 @@
 
     <div id="playersRow" class="row">
       <div class="col-md-3" id="player1info">
-        <h4>Player 1 name</h4>
+        <h4 class="fbp1Name">Player 1 name</h4>
         <div id="player1choices"></div>
         <div id="player1score"></div>
       </div>
@@ -56,7 +60,7 @@
       <div class="col-md-6 text-center" id="resultsArea"></div>
 
       <div class="col-md-3" id="player2info">
-        <h4 class="p2NameInput">Player 2 name</h4>
+        <h4 class="fbp2Name">Player 2 name</h4>
         <div id="player2choices"></div>
         <div id="player2score"></div>
       </div>

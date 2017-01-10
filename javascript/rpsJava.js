@@ -55,8 +55,12 @@ $(document).ready(function(){
 
     player1ref.set({
       player1Name: p1name,
+      player1Choice: "",
       player1ID: timestamp1
     });
+
+    // $("#p1NameHide").hide();
+
 
   });
 
@@ -68,8 +72,10 @@ $(document).ready(function(){
 
     player2ref.set({
       player2Name: p2name,
+      player2Choice: "",
       player2ID: timestamp2
     });
+    $("#p2NameHide").hide();
 
   });
 
@@ -77,9 +83,13 @@ $(document).ready(function(){
 player1ref.on("value", function(snap){
   var snapshot = snap.val();
   var new1Name = snapshot.player1Name;
-  var new2Name = snapshot.player2Name;
+
   console.log(snapshot);
-  $("#fbp1Name").html(new1Name);
+  $(".fbp1Name").html(new1Name);
+  // HIDE NAME INPUT BOX IF NAME DEFINED
+  if(new1Name !== undefined){
+    $("#p1NameHide").hide();
+  }
 
 });
 player2ref.on("value", function(snap){
@@ -87,7 +97,10 @@ player2ref.on("value", function(snap){
   var new2Name = snapshot.player2Name;
   console.log(snapshot);
 
-  $("#fbp2Name").html(new2Name);
+  $(".fbp2Name").html(new2Name);
+  if(new2Name !== undefined){
+    $("#p2NameHide").hide();
+  }
 });
 
 
