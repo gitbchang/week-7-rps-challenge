@@ -12,7 +12,9 @@ $(document).ready(function(){
 
   var dbPlayerNames = database.ref("/names");
   var player1ref = database.ref("/names/player1");
+  var player1ChoiceRef = database.ref("/names/player1/choice");
   var player2ref = database.ref("/names/player2");
+  var player2ChoiceRef = database.ref("/names/player2/choice");
 
   // Link to Firebase Database for viewer tracking
   // database reference for us
@@ -61,7 +63,6 @@ $(document).ready(function(){
 
     player1ref.set({
       player1Name: p1name,
-      player1Choice: "",
       player1ID: timestamp1
     });
 
@@ -79,7 +80,6 @@ $(document).ready(function(){
 
     player2ref.set({
       player2Name: p2name,
-      player2Choice: "",
       player2ID: timestamp2
     });
     $("#p2NameHide").hide();
@@ -101,6 +101,7 @@ player1ref.on("value", function(snap){
 });
 player2ref.on("value", function(snap){
   var snapshot = snap.val();
+  console.log(snapshot);
   var new2Name = snapshot.player2Name;
   console.log(snapshot);
 
@@ -183,6 +184,19 @@ updateScores();
 
 $(document).on("click", ".choiceButton", function(){
   console.log($(this).data("choice1"));
+
+  // p2choice = $(this).data("choice2");
+  // player2ChoiceRef.set({
+  //   player2choice: p2choice
+  // });
+  //
+  // p1choice = $(this).data("choice1");
+  // player1ChoiceRef.set({
+  //   player1choice: p1choice
+  // });
+
+
+
   // PLAYER 1 CHOICE LOGIC
   if($(this).data("choice1") === "Rock"){
     $("#player1choices").empty();
